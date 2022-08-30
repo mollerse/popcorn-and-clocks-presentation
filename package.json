@@ -1,0 +1,43 @@
+{
+  "name": "popcorn-and-clocks-presentation",
+  "version": "1.0.0",
+  "description": "Popcorn & Clocks, a presentation about scheduling in the browser",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "Stian Møllersen <stian.moellersen@gmail.com>",
+  "license": "CC-BY-NC-SA-4.0",
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "prettier": "^2.7.1",
+    "vite": "^3.0.9"
+  },
+  "dependencies": {
+    "@mollerse/midi-control": "^1.2.2",
+    "eslint-plugin-react": "^7.31.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "spectacle": "^9.4.0"
+  },
+  "prettier": {},
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "env": {
+      "browser": true
+    },
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": "latest",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    }
+  }
+}
