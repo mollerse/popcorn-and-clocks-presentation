@@ -1,33 +1,38 @@
-import { start as naiveStart, stop as naiveStop } from "./0_naivescheduling";
-import { start as halfnotesStart, stop as halfnotesStop } from "./1_halfnotes";
+import { start as pianoStart, stop as pianoStop } from "./0_piano";
+import { start as naiveStart, stop as naiveStop } from "./1_naivescheduling";
+import { start as halfnotesStart, stop as halfnotesStop } from "./2_halfnotes";
 import {
   start as halfnotesSemifixedStart,
   stop as halfnotesSemifixedStop,
-} from "./1_5_halfnotessemifixed";
+} from "./2_5_halfnotessemifixed";
 import {
   start as halfnotesFixedStart,
   stop as halfnotesFixedStop,
-} from "./2_halfnotesfixed";
+} from "./3_halfnotesfixed";
 import {
   start as singleloopStart,
   stop as singleloopStop,
-} from "./3_singleloop";
+} from "./4_singleloop";
 import {
   start as singleloopFixedStart,
   stop as singleloopFixedStop,
-} from "./4_singleloopfixed";
-import { start as lookaheadStart, stop as lookaheadStop } from "./5_lookahead";
+} from "./5_singleloopfixed";
+import { start as lookaheadStart, stop as lookaheadStop } from "./6_lookahead";
 import {
   start as audioclockStart,
   stop as audioclockStop,
-} from "./6_audioclock";
-import { start as funtimesStart, stop as funtimesStop } from "./7_funtimes";
+} from "./7_audioclock";
+import { start as funtimesStart, stop as funtimesStop } from "./8_funtimes";
 import {
   start as multifuntimesStart,
   stop as multifuntimesStop,
-} from "./8_multifuntimes";
+} from "./9_multifuntimes";
 
 let demos = {
+  piano: {
+    start: pianoStart,
+    stop: pianoStop,
+  },
   naive: {
     start: naiveStart,
     stop: naiveStop,
@@ -72,8 +77,13 @@ let demos = {
 
 export class Demo {
   constructor({ demo, controls, audioContext }) {
+    if (Array.isArray(controls)) {
+      this.controls = controls[0];
+      this.piano = controls[1];
+    } else {
+      this.controls = controls;
+    }
     this.demo = demos[demo];
-    this.controls = controls;
     this.audioContext = audioContext;
 
     this.canvas = null;
@@ -96,7 +106,12 @@ export class Demo {
   async start(el) {
     this.mount = el;
     this.canvas = this.mountCanvas();
-    await this.demo.start(this.canvas, this.controls, this.audioContext);
+    await this.demo.start(
+      this.canvas,
+      this.controls,
+      this.audioContext,
+      this.piano
+    );
     this.running = true;
 
     document.body.classList.add("show-controls");

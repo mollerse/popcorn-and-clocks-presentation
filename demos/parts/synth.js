@@ -12,6 +12,8 @@ export default class Synth {
     this.D = 0.5;
     this.S = 0.0;
     this.R = 0.0;
+
+    this.notes = {};
   }
 
   envelope(A, D, S, R) {
@@ -69,5 +71,40 @@ export default class Synth {
     a.gain.linearRampToValueAtTime(this.S, at + A + D);
     a.gain.linearRampToValueAtTime(0.0001, at + A + D + R);
     v.stop(at + A + D + R);
+  }
+
+  noteOn(note) {
+    if (!note) return;
+    let freq = frequencyFromNoteNumber(note);
+    let now = this.actx.currentTime;
+
+    let A = this.A;
+    let D = this.D;
+
+    let v = this.osc("square", freq, 0);
+    let a = this.amp();
+
+    a.gain.setValueAtTime(1, now);
+    a.connect(this.out);
+    v.connect(a);
+
+    a.gain.linearRampToValueAtTime(1.0, now + A);
+    a.gain.linearRampToValueAtTime(this.S, now + A + D);
+    a.gain.linearRampToValueAtTime(this.S, now + A + D);
+
+    this.notes[note] = () => {
+      let now = this.actx.currentTime;
+      let R = this.R;
+      a.gain.linearRampToValueAtTime(0.0001, now + R);
+      v.stop(now + R);
+
+      delete this.notes[note];
+    };
+  }
+
+  noteOff(note) {
+    if (!this.notes[note]) return;
+
+    this.notes[note]();
   }
 }

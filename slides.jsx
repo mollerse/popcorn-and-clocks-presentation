@@ -11,6 +11,7 @@ import {
   CodeSpan,
   Box,
   FlexBox,
+  Link,
 } from "spectacle";
 
 import { Demo } from "./demos/index";
@@ -20,6 +21,9 @@ let controls = midiControl("tweakpane", ["Demo Controls"]);
 
 await controls.init("Launch Control");
 const audioContext = new AudioContext();
+
+let pianoControls = midiControl("tweakpane", ["Piano"]);
+await pianoControls.init("nanoKEY2");
 
 const theme = {
   fonts: {
@@ -33,6 +37,11 @@ const theme = {
   },
 };
 
+let pianoDemo = new Demo({
+  demo: "piano",
+  controls: [controls, pianoControls],
+  audioContext,
+});
 let naiveDemo = new Demo({ demo: "naive", controls, audioContext });
 let halfNotesDemo = new Demo({ demo: "halfnotes", controls, audioContext });
 let halfNotesSemifixedDemo = new Demo({
@@ -61,18 +70,19 @@ let multifuntimesDemo = new Demo({
 });
 
 const demos = {
-  8: [naiveDemo, 0],
-  14: [halfNotesDemo, 1],
-  18: [halfNotesFixedDemo, 2],
-  33: [halfNotesSemifixedDemo, 3],
-  35: [halfNotesFixedDemo, 4],
-  39: [singleLoopDemo, 5],
-  42: [singleLoopFixedDemo, 6],
-  51: [singleLoopFixedDemo, 7],
-  54: [lookaheadDemo, 8],
-  63: [audioclockDemo, 9],
-  71: [funtimesDemo, 10],
-  73: [multifuntimesDemo, 11],
+  7: [pianoDemo, 0],
+  10: [naiveDemo, 1],
+  16: [halfNotesDemo, 2],
+  20: [halfNotesFixedDemo, 3],
+  35: [halfNotesSemifixedDemo, 4],
+  37: [halfNotesFixedDemo, 5],
+  41: [singleLoopDemo, 6],
+  44: [singleLoopFixedDemo, 7],
+  53: [singleLoopFixedDemo, 8],
+  56: [lookaheadDemo, 9],
+  64: [audioclockDemo, 10],
+  76: [funtimesDemo, 11],
+  78: [multifuntimesDemo, 12],
 };
 
 document.body.addEventListener("keydown", async function (event) {
@@ -110,10 +120,10 @@ const Presentation = () => (
   <Deck theme={theme}>
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight="300" margin="0px" fontSize="150px">
-        POPCORN &amp; KLOKKER
+        POPCORN &amp; CLOCKS
       </Heading>
       <Heading fontWeight="300" margin="0px" fontSize="h2">
-        &mdash; En historie om skedulering i nettleseren
+        &mdash; A Story About Scheduling in the Browser
       </Heading>
       <Text
         fontWeight="300"
@@ -131,12 +141,18 @@ const Presentation = () => (
         margin="0px"
         fontSize={25}
       >
-        Digital Historieutvikling NRK
+        Digital Story Development NRK
       </Text>
     </SlideLayout.Center>
 
+    <SlideLayout.Center>
+      <Heading fontWeight={300}>
+        Our journey today begins with everyones favorite thing in the whole
+        world
+      </Heading>
+    </SlideLayout.Center>
+
     <Slide transition={transition}>
-      <Heading fontWeight={300}>Popcorn</Heading>
       <Appear>
         <FlexBox>
           <Box>
@@ -195,34 +211,41 @@ const Presentation = () => (
         ></iframe>
       </FlexBox>
       <Text textAlign="center" fontSize={15} fontWeight={300}>
-        Takk til Tove Lo for å gjøre dette enda mer relevant enn det var når det
-        ble påtenkt 😅
+        Big thanks to Tove Lo for making this talk more relevant now, than when
+        I proposed it. 😅
       </Text>
     </Slide>
 
     <SlideLayout.Center>
       <Heading fontWeight={300}>Mission:</Heading>
       <Heading fontWeight={300}>
-        Få nettleseren til å spille Popcorn mens det skjer noe visuelt på
-        skjermen.
+        Make the browser play Popcorn while something visual is happening on the
+        screen
       </Heading>
     </SlideLayout.Center>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Hvor starter vi?
+        Where do we begin?
       </Heading>
-      <Text fontWeight={300}>Vi trenger to ting:</Text>
+      <Text fontWeight={300}>We're going to need two things:</Text>
       <Appear>
-        <Text fontWeight={300}>1 - Noe som kan spille noter.</Text>
+        <Text fontWeight={300}>1 - Something that plays notes.</Text>
       </Appear>
       <Appear>
-        <Text fontWeight={300}>2 - Noe som kan tegne ting på skjermen.</Text>
+        <Text fontWeight={300}>
+          2 - Something that draws stuff on the screen.
+        </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Noe som kan spille noter</Text>
+      <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <div className="demo-mount" />
+    </Slide>
+
+    <Slide transition={transition}>
+      <Text fontWeight={300}>Something that plays notes</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -247,7 +270,7 @@ const PULSE = 0.25;
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Noe som kan spille noter</Text>
+      <Text fontWeight={300}>Something that plays notes</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -289,53 +312,54 @@ playSong()
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 1: <CodeSpan>setInterval</CodeSpan>
+        Attempt 1: <CodeSpan>setInterval</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        <CodeSpan>setInterval</CodeSpan> er vårt første møte med skedulering.
+        <CodeSpan>setInterval</CodeSpan> is our first encounter with scheduling.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          <CodeSpan>setInterval</CodeSpan> lar oss instruere nettleseren til å
-          kalle en funksjon hvert Nte ms.
+          <CodeSpan>setInterval</CodeSpan> lets us instruct the browser to call
+          a function every Nth ms.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 1: <CodeSpan>setInterval</CodeSpan>
+        Attempt 1: <CodeSpan>setInterval</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        <CodeSpan>setInterval</CodeSpan> vil legge seg i køen sammen med andre
-        asynkrone og skedulerte ting som nettleseren håndterer i tur og orden.
+        <CodeSpan>setInterval</CodeSpan> puts the function into the queue with
+        other async and scheduled things, which the browser handles accordingly.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Det vil si at vi ikke har noen garanti for at funksjonen vår kalles
-          med eksakt timing, det kommer helt an på hva annet nettleseren har å
-          sysle med på det aktuelle tidspunktet.
+          This means that we do not have any guarantees that our function will
+          be called with exact timing. It depends entirely on which other tasks
+          the browser is handling at the same time.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 1: <CodeSpan>setInterval</CodeSpan>
+        Attempt 1: <CodeSpan>setInterval</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        De med skarpe ører hørte kanskje at det var noe litt off med
-        avspillingen vår.
+        If you've got trained ears, you might even notice that there is
+        something off about the playback.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Alle notene skal ikke være like lange. Noen av notene er kortere.
+          The notes should not all be the same length. Some of the notes are
+          shorter.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Halvnoter.</Text>
+      <Text fontWeight={300}>Half notes.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -364,7 +388,7 @@ const PULSE = 0.25;
       </CodePane>
     </Slide>
     <Slide transition={transition}>
-      <Text fontWeight={300}>Halvnoter.</Text>
+      <Text fontWeight={300}>Half notes.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -402,21 +426,22 @@ function playSong() {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 1: <CodeSpan>setInterval</CodeSpan>
+        Attempt 1: <CodeSpan>setInterval</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        Den største begrensningen til <CodeSpan>setInterval</CodeSpan> er at
-        intervallet er fixed.
+        The most significant drawback of <CodeSpan>setInterval</CodeSpan> is
+        that the scheduling interval is fixed.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Det funker dårlig når vi vil veksle mellom lange og korte intervaller.
+          This does not lend itself terribly well to cases with varying
+          intervals. Like notes usually have.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Fleksible intervaller.</Text>
+      <Text fontWeight={300}>Flexible intervals.</Text>
       <CodePane language="javascript" highlightRanges={[17, 17]}>
         {`
 function playSong() {
@@ -442,7 +467,7 @@ function playSong() {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Fleksible intervaller.</Text>
+      <Text fontWeight={300}>Flexible intervals.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -478,55 +503,56 @@ function playSong() {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 2: <CodeSpan>setTimeout</CodeSpan>
+        Approach 2: <CodeSpan>setTimeout</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        <CodeSpan>setTimeout</CodeSpan> er en mer fleksibel variant av{" "}
+        <CodeSpan>setTimeout</CodeSpan> is a more flexible solution than{" "}
         <CodeSpan>setInterval</CodeSpan>.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Istedenfor å sette opp noe som kalles hver Nte ms, setter vi opp noe
-          som kalles 1-en gang om N ms.
+          Instead of having a repeating fixed interval, we can schedule our
+          function to be called once in N ms.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 2: <CodeSpan>setTimeout</CodeSpan>
+        Approach 2: <CodeSpan>setTimeout</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        Vi benytter oss av muligheten for å skedulere ting rekursivt, for å
-        oppnå det samme som <CodeSpan>setInterval</CodeSpan>.
+        To achieve the same repeating scheduling as{" "}
+        <CodeSpan>setInterval</CodeSpan> we'll utilize recursion. Every time our
+        function gets called, it will schedule the next function call.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Ellers fungerer <CodeSpan>setTimeout</CodeSpan> og{" "}
-          <CodeSpan>setInterval</CodeSpan> på samme måte.
+          Appart from this, <CodeSpan>setTimeout</CodeSpan> and{" "}
+          <CodeSpan>setInterval</CodeSpan> work in the same way.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 2: <CodeSpan>setTimeout</CodeSpan>
+        Approach 2: <CodeSpan>setTimeout</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        Begrensningene til <CodeSpan>setTimeout</CodeSpan> er de samme som{" "}
-        <CodeSpan>setInterval</CodeSpan>, vi har ingen garanti for at timingen
-        er eksakt.
+        The limitations of <CodeSpan>setTimeout</CodeSpan> are unfortunatly the
+        same as <CodeSpan>setInterval</CodeSpan>. No guarantees for exact
+        timing.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Det er godt nok for nå, og vi kan gå videre til delmål 2: Noe som kan
-          tegne ting på skjermen.
+          It is, however, good enough for now. Let's get cracking on part 2 of
+          the mission: drawing things on the screen.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>En grunnleggende animasjonsloop</Text>
+      <Text fontWeight={300}>The Animation Loop</Text>
       <CodePane language="javascript" highlightRanges={[[14, 16], [6, 12], 10]}>
         {`
 function frame(t) {
@@ -555,60 +581,59 @@ playSong()
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 3: <CodeSpan>requestAnimationFrame</CodeSpan>
+        Approach 3: <CodeSpan>requestAnimationFrame</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        Allerede her treffer vi på neste metode for skedulering,{" "}
+        Already we're getting to a 3rd approach for scheduling,{" "}
         <CodeSpan>requestAnimationFrame</CodeSpan>.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          <CodeSpan>requestAnimationFrame</CodeSpan> er en måte for oss å be
-          nettleseren om å kjøre en funksjon rett før den setter igang med en ny
-          opptegning, sånn at vi hele tiden er synkronisert med nettleserens
-          egen tengeloop.
+          <CodeSpan>requestAnimationFrame</CodeSpan> schedules a function to be
+          called immediatly before a paint happens. This provides us with a way
+          to synchronize our code with the browsers internal paint loop.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 3: <CodeSpan>requestAnimationFrame</CodeSpan>
+        Approach 3: <CodeSpan>requestAnimationFrame</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        En ting som skiller <CodeSpan>requestAnimationFrame</CodeSpan> fra de to
-        andre metodene er at vi ikke har noen eksplisitt måte å time ting på.
+        One major difference between <CodeSpan>requestAnimationFrame</CodeSpan>{" "}
+        and the two other approaches we've looked at, is that it does not have
+        any way to explicitly control timing.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Det vi har isteden er tidspunktet, i ms, når funksjonen ble kallt av
-          nettleseren. Så vi må gjøre litt matte for å vite hvor langt vi har
-          kommet.
+          What we get instead, is the exact time our function is called. So we
+          can achieve the same things as before, with just a little bit of math.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Metode 3: <CodeSpan>requestAnimationFrame</CodeSpan>
+        Approach 3: <CodeSpan>requestAnimationFrame</CodeSpan>
       </Heading>
       <Text fontWeight={300}>
-        En annen ting som skiller <CodeSpan>requestAnimationFrame</CodeSpan> fra
-        de to andre er at den har sin egen kø, så nettleseren kan velge å
-        prioritere <CodeSpan>requestAnimationFrame</CodeSpan>.
+        Another thing that separates <CodeSpan>requestAnimationFrame</CodeSpan>{" "}
+        from our two previous attemps, are the fact that this time we actually
+        have a different queue. Which means the browser can chose to prioritize
+        functions scheduled with <CodeSpan>requestAnimationFrame</CodeSpan>.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Det er fortsatt ingen garanti for at timingen er stabil, hvis det tar
-          for lang tid å kjøre tegnekoden vår begynner nettleseren å droppe
-          frames og dermed forstyrre tiden mellom hver{" "}
-          <CodeSpan>requestAnimationFrame</CodeSpan>.
+          There is, however, still no guarantee that the timing is stable. If
+          our code takes too long to run, the browser will start dropping frames
+          and with it calls to our function.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>En grunnleggende animasjonsloop</Text>
+      <Text fontWeight={300}>The Animation Loop</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[6, 12], 7, 9, 10, 11, [1, 3], [18, 20]]}
@@ -639,7 +664,7 @@ playSong()
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Synkronisere lyd og bilde.</Text>
+      <Text fontWeight={300}>Synchronizing sound and visuals.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[5, 6], 10, [11, 15], 17]}
@@ -668,7 +693,7 @@ function loop(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Tegne noter.</Text>
+      <Text fontWeight={300}>Drawing notes.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -696,7 +721,7 @@ function frame(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Tegne noter.</Text>
+      <Text fontWeight={300}>Drawing notes.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[3, 5], 3, 4, 5, [7, 9], [7, 8], 9]}
@@ -719,7 +744,7 @@ function frame(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Tegne noter.</Text>
+      <Text fontWeight={300}>Drawing notes.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -760,7 +785,7 @@ function frame(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Tegne noter.</Text>
+      <Text fontWeight={300}>Drawing notes.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[3, 12], 6, 7, [9, 11], 9, 10, 11]}
@@ -785,7 +810,7 @@ function frame(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Tegne opp en progress indikator.</Text>
+      <Text fontWeight={300}>Drawing a progress indicator.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -819,7 +844,7 @@ function frame(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Fikse gaps i visualiseringen.</Text>
+      <Text fontWeight={300}>Fixing the gaps in our visual.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[3, [4, 14], [5, 7], 9, [10, 11], 15]}
@@ -854,22 +879,24 @@ function frame() {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Hva har vi bygd?
+        What have we built?
       </Heading>
       <Text fontWeight={300}>
-        Vi har noe som spiller av noter, bygd på å skedulere avspilling med
-        setTimeout, og vi har en paintloop som tegner noter, bygd med
-        requestAnimationFrame.
+        We have something which plays notes, built by scheduling notes with{" "}
+        <CodeSpan>setTimeout</CodeSpan>. And we've got something which draws
+        notes, built by continously running a paint function in a loop using{" "}
+        <CodeSpan>requestAnimationFrame</CodeSpan>.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Hadde det ikke vært fint å slippe å synkronisere to loops?
+          Wouldn't it be nice if we could base the two parts on the same
+          underlying tech?
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Loop-konsolidering.</Text>
+      <Text fontWeight={300}>Loop-consolidation.</Text>
       <CodePane language="javascript" highlightRanges={[2, 3]}>
         {`
 init()
@@ -880,7 +907,7 @@ playSong()
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Loop-konsolidering.</Text>
+      <Text fontWeight={300}>Loop-consolidation.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -927,19 +954,20 @@ function loop(t) {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Loop-konsolidering
+        Loop-consolidation
       </Heading>
-      <Text fontWeight={300}>Nå har vi introdusert bugs igjen.</Text>
+      <Text fontWeight={300}>Whopsie, we've reintroduced a few bugs.</Text>
       <Appear>
         <Text fontWeight={300}>
-          Det er en variant av feilen vi hadde når vi forsøkte å tegne
-          halvnotene. Vi tar ikke høyde for at notene skal etterfølge hverandre.
+          This is a repeat of the bugs we had when we didn't account for the
+          varying duration of the notes and the fact that they're meant to
+          follow eachother.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Loop-konsolidering.</Text>
+      <Text fontWeight={300}>Loop-consolidation.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[8, 17], 8, 6, 2, [9, 13], 15, 16, [8, 17], 19]}
@@ -976,19 +1004,21 @@ function loop(t) {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Loop-konsolidering
+        Loop-consolidation
       </Heading>
       <Text fontWeight={300}>
-        Vi har alt samlet i en og samme loop, nå driver vi å manuellt teller det
-        samme på to ulike plasser.
+        We've succesfully consolidated both the scheduling and painting into one
+        loop.
       </Text>
       <Appear>
-        <Text fontWeight={300}>Vi må ha en smartere datastruktur.</Text>
+        <Text fontWeight={300}>
+          We're still doing alot of manual sync work though. Let's fix that.
+        </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Smarte data.</Text>
+      <Text fontWeight={300}>Smarter data.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[1, 15], 3, [10, 12], [17, 21], 16, 19]}
@@ -1020,7 +1050,7 @@ function loop(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Smarte data.</Text>
+      <Text fontWeight={300}>Smarter data.</Text>
       <CodePane language="javascript" highlightRanges={[]}>
         {`
 const ROOT = 83;
@@ -1029,7 +1059,7 @@ const SONG = POPCORN.map((v) => (v == null ? v : v + ROOT));
       </CodePane>
     </Slide>
     <Slide transition={transition}>
-      <Text fontWeight={300}>Smarte data.</Text>
+      <Text fontWeight={300}>Smarter data.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[2, 18], 3, [4, 5], 6, 8, [10, 14], 15, 17]}
@@ -1058,7 +1088,7 @@ const SONG = POPCORN.reduce(function (acc, n, i) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Smarte data.</Text>
+      <Text fontWeight={300}>Smarter data.</Text>
       <CodePane language="javascript" highlightRanges={[4, 5]}>
         {`
 function loop(t) {
@@ -1086,7 +1116,7 @@ function loop(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Smarte data.</Text>
+      <Text fontWeight={300}>Smarter data.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[2, 12], 1, 4, 6, [7, 10], 7, 8, 9]}
@@ -1109,7 +1139,7 @@ function loop(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Smarte data.</Text>
+      <Text fontWeight={300}>Smarter data.</Text>
       <CodePane language="javascript" highlightRanges={[4, 5]}>
         {`
 function frame(t) {
@@ -1125,7 +1155,7 @@ function frame(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Smarte data.</Text>
+      <Text fontWeight={300}>Smarter data.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[3, 13], 3, 4, 5, [7, 9], 7, 11]}
@@ -1157,21 +1187,22 @@ function frame(t) {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Smarte data.
+        Smarter data.
       </Heading>
       <Text fontWeight={300}>
-        Vi har fjerna behovet for å tracke hvor langt vi har kommet i form av en
-        variabel, og lagt det inn i en datastruktur isteden. Big win.
+        We've removed the need for manually tracking the progress of our song,
+        instead we're just calculating that up front.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Vi har egentlig ikke gjort noe med runtime skjørhet. Det burde vi.
+          We haven't done anything about how susceptible our solution is to
+          runtime shennanigans. Let's fix that.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Kø og lookahead.</Text>
+      <Text fontWeight={300}>Queues and lookahead.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[
@@ -1217,40 +1248,40 @@ function loop(t) {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Tid != Tid
+        Time != Time
       </Heading>
       <Text fontWeight={300}>
-        Noen la kanskje merke til hvordan vi gikk fra <CodeSpan>now()</CodeSpan>{" "}
-        til å eksplisitt sette et tidspunkt når vi ber synthen om å spille en
-        note.
+        Some of you might have noticed how we went from{" "}
+        <CodeSpan>now()</CodeSpan> to explicitly defining a time for when we
+        want our note to play.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Gjennom hele prosessen til nå har vi sjonglert tid i ms og tid i s,
-          som og er ganske forvirrende.
+          Throughout the code we've also been swapping between ms and s as our
+          time meassure, which is quite a source of confusion.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Tid != Tid
+        Time != Time
       </Heading>
       <Text fontWeight={300}>
-        I tillegg til tiden <CodeSpan>requestAnimationFrame</CodeSpan> forteller
-        oss om, har vi den interne tiden til <CodeSpan>WebAudio</CodeSpan>{" "}
-        APIet.
+        In addition to the clock we get from{" "}
+        <CodeSpan>requestAnimationFrame</CodeSpan>, we've also got a clock in
+        the <CodeSpan>WebAudio</CodeSpan>
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Det er <CodeSpan>WebAudio</CodeSpan>-klokka vi har benyttet oss av
-          hver gang vi har bedt synthen om å spille av en note.
+          The <CodeSpan>WebAudio</CodeSpan>-clock is the one we've been using
+          whenever we told the synth to play a note.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>Tid != Tid</Text>
+      <Text fontWeight={300}>Time != Time</Text>
       <CodePane language="javascript" highlightRanges={[]}>
         {`
 function now() {
@@ -1262,51 +1293,52 @@ function now() {
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Tid != Tid
+        Time != Time
       </Heading>
       <Text fontWeight={300}>
-        Det som er ulempen med klokka i{" "}
-        <CodeSpan>requestAnimationFrame</CodeSpan> er at den kun kan leses av i
-        det vi får et callback.
+        One major drawback with the <CodeSpan>requestAnimationFrame</CodeSpan>
+        -clock is that we can only access the time when our function gets
+        called.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          I tillegg har <CodeSpan>requestAnimationFrame</CodeSpan> en
-          begrensning i at tidspunktet kun blir lest av en gang for hver runde
-          med callbacks.
+          In addition, the <CodeSpan>requestAnimationFrame</CodeSpan>-clock will
+          snapshot. Inside one round of the paint loop it will only be read
+          once, no matter how much time passes between work.
         </Text>
       </Appear>
     </Slide>
 
-    <Slide transition={transition}>
+    {/* <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Tid != Tid
+        Time != Time
       </Heading>
       <Text fontWeight={300}>
         Som vil si at hvis du har fler{" "}
         <CodeSpan>requestAnimationFrame</CodeSpan> callbacks på en side vil ikke
         tiden oppdateres med tiden som ble brukt på foregående callbacks.
       </Text>
-    </Slide>
+    </Slide> */}
 
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Tid != Tid
+        Time != Time
       </Heading>
       <Text fontWeight={300}>
-        <CodeSpan>WebAudio</CodeSpan>-klokka har ikke denne begrensningen. Den
-        kjører i en separat tråd og vil alltid være oppdatert.
+        The <CodeSpan>WebAudio</CodeSpan>-clock does not have this limitation.
+        It runs in a thread of its own and will always be up to date.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Når vi skal lage noe visuel som skal synkroniseres mot lyd, bør derfor
-          det visuelle og benytte seg av <CodeSpan>WebAudio</CodeSpan>-klokka.
+          When we are making something which features synchronized audio and
+          visuals, we should always be using the <CodeSpan>WebAudio</CodeSpan>
+          -clock.
         </Text>
       </Appear>
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>requestAnimationFrame tid.</Text>
+      <Text fontWeight={300}>requestAnimationFrame-clock.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[2, 17], 2, 3, 5, 7, 14]}
@@ -1334,7 +1366,7 @@ function loop(t) {
     </Slide>
 
     <Slide transition={transition}>
-      <Text fontWeight={300}>WebAudio tid.</Text>
+      <Text fontWeight={300}>WebAudio-clock.</Text>
       <CodePane
         language="javascript"
         highlightRanges={[[2, 20], 3, 1, 5, [8, 15], 14, 16]}
@@ -1366,91 +1398,162 @@ function loop() {
       <div className="demo-mount" />
     </Slide>
 
-    {/* HIT */}
-
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Hva har vi bygd?
+        What have we built?
       </Heading>
       <Text fontWeight={300}>
-        Vi har nå en snurre som bygger på nettleserens paint-loop med{" "}
-        <CodeSpan>requestAnimationFrame</CodeSpan>, som igjen benytter seg av{" "}
-        <CodeSpan>WebAudio</CodeSpan>-klokka for å skedulere noter en
-        synthesizer skal spille og for å synkronisere lyd og bilde.
+        We now have a little widget built on the browsers paint-loop with
+        <CodeSpan>requestAnimationFrame</CodeSpan>, which utilizes the
+        <CodeSpan>WebAudio</CodeSpan>-clock to schedule notes a synth can play
+        and sync audio and visuals.
       </Text>
       <Appear>
-        <Text fontWeight={300}>Ikke værst for en tidlig ettermiddag.</Text>
+        <Text fontWeight={300}>Not bad for a friday afternoon.</Text>
       </Appear>
     </Slide>
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Hva har vi lært?
+        What have we learned?
       </Heading>
       <Text fontWeight={300}>
-        Det som starta som et moro-prosjekt for å gjenskape Popcorn, en meme-låt
-        fra 1969, har gitt oss innsikt i fler av nettleserns verktøy for å
-        hanskes med hendelser i tid.
+        What started as a fun-project to recreate Popcorn, a meme-tune from
+        1969, has given us some valuable experience with the tools available in
+        the browser to deal with audio and visuals in time.
       </Text>
       <Appear>
         <Text fontWeight={300}>
           <CodeSpan>setInterval</CodeSpan>, <CodeSpan>setTimeout</CodeSpan>,{" "}
-          <CodeSpan>requestAnimationFrame</CodeSpan>,{" "}
-          <CodeSpan>WebAudio</CodeSpan>-klokka.
-        </Text>
-      </Appear>
-      <Appear>
-        <Text fontWeight={300}>
-          Og en liten leksjon i nytten av å velge rett datastruktur.
+          <CodeSpan>requestAnimationFrame</CodeSpan> for scheduling. And the two
+          clocks of <CodeSpan>requestAnimationFrame</CodeSpan> and{" "}
+          <CodeSpan>WebAudio</CodeSpan>.
         </Text>
       </Appear>
     </Slide>
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Læring.
+        Learning.
       </Heading>
       <Text fontWeight={300}>
-        Det trenger ikke være seriøst eller nyttig. Eller riktig for den saks
-        skyld. Det viktigste er at <em>du</em> får noe ut av det.
+        It doesn't have to be serious or useful. Or correct for that matter. The
+        most important thing is that <em>you</em> get something out of it.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Koding for egen underholdning er vel så lærerikt som annen kode.
+          Coding for your own enjoyment can be just as educational as any other
+          coding.
         </Text>
       </Appear>
     </Slide>
     <Slide transition={transition}>
       <Heading textAlign="left" fontWeight={300}>
-        Læring.
+        Learning.
       </Heading>
       <Text fontWeight={300}>
-        Vær nysgjerrig. Vær tøysete. Ha det gøy. Plutselig har du lært deg noe
-        interessant du kan få bruk for.
+        Be curious. Be silly. Have fun. Suddenly you'll stumble upon something
+        interesting you can use in another context.
       </Text>
       <Appear>
         <Text fontWeight={300}>
-          Koding er et utrolig artig kreativt medium. Bare fordi det er
-          skjemagenerering som betaler regninga, betyr ikke det at det er alt
-          programmering er.
+          Coding is a very creative medium. Just because generating forms is
+          what pays the bills, doesn't mean it's all that coding can be.
         </Text>
       </Appear>
     </Slide>
+
+    <Slide transition={transition}>
+      <Heading textAlign="left" fontWeight={300}>
+        Knowing that there is more to it.
+      </Heading>
+      <Text fontWeight={300}>I used to play piano as a teenager.</Text>
+      <Appear>
+        <Text fontWeight={300}>
+          But I gave up on it, despite a love of music, because I never saw the
+          creative side of it.
+        </Text>
+      </Appear>
+    </Slide>
+
+    <Slide transition={transition}>
+      <Heading textAlign="left" fontWeight={300}>
+        Knowing that there is more to it.
+      </Heading>
+      <Text fontWeight={300}>I went to university to learn programming.</Text>
+      <Appear>
+        <Text fontWeight={300}>
+          Much in the same way as my piano playing, I only saw that one path
+          laid out by my curriculum.
+        </Text>
+      </Appear>
+    </Slide>
+
+    <Slide transition={transition}>
+      <Heading textAlign="left" fontWeight={300}>
+        Knowing that there is more to it.
+      </Heading>
+      <Text fontWeight={300}>
+        Interacting with the frontend-community, and especially the creative
+        programming crowd showed me that there were more to it.
+      </Text>
+      <Appear>
+        <Text fontWeight={300}>
+          And that's what I hope you'll take away from this. That programming
+          can be more, if you want or need it to be.
+        </Text>
+      </Appear>
+    </Slide>
+
+    <Slide transition={transition}>
+      <Heading textAlign="left" fontWeight={300}>
+        My dream job
+      </Heading>
+      <Appear>
+        <Text fontWeight={300}>
+          Doing things like{" "}
+          <Link
+            color="#ebebeb"
+            fontWeight="300"
+            target="_blank"
+            href="https://www.nrk.no/sos-from-the-ocean-1.15763366"
+          >
+            this
+          </Link>
+        </Text>
+      </Appear>
+      <Appear>
+        <Text fontWeight={300}>
+          <Text fontWeight={300}>
+            and{" "}
+            <Link
+              color="#ebebeb"
+              fontWeight="300"
+              target="_blank"
+              href="https://preview.nrk.no/1.14946557.LATEST"
+            >
+              this
+            </Link>
+          </Text>
+        </Text>
+      </Appear>
+    </Slide>
+
     <SlideLayout.Center transition={transition}>
-      <Heading fontWeight={300}>Appropo gøy.</Heading>
+      <Heading fontWeight={300}>Speaking of having fun..</Heading>
     </SlideLayout.Center>
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>
-        Siden vi uansett har en ganske robust greie for lyd og bilde.
+        Since we've got a pretty robust thing with audio and visuals.
       </Heading>
     </SlideLayout.Center>
     <SlideLayout.Center transition={transition}>
-      <Heading fontWeight={300}>Og vi har jo snakka mye om klokker...</Heading>
+      <Heading fontWeight={300}>And we've talked alot about clocks...</Heading>
     </SlideLayout.Center>
     <Slide transition={transition}>
       <div className="demo-mount" />
     </Slide>
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>
-        Og siden vi uansett har en god datastruktur...
+        And since we've structured our data in an ordered manner...
       </Heading>
     </SlideLayout.Center>
     <Slide transition={transition}>
@@ -1458,7 +1561,7 @@ function loop() {
     </Slide>
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight="300" margin="0px" fontSize="150px">
-        TAKK FOR MEG!
+        THANKS FOR LISTENING!
       </Heading>
       <Text
         fontWeight="300"
@@ -1476,12 +1579,14 @@ function loop() {
         margin="0px"
         fontSize={25}
       >
-        Digital Historieutvikling NRK
+        Digital Story Development NRK
       </Text>
       <Text fontWeight="300" textAlign="center" fontSize={25}>
-        Slides &amp; Kode: github/mollerse/popcorn-and-clocks-presentation
+        Slides &amp; Code: github/mollerse/popcorn-and-clocks-presentation
       </Text>
     </SlideLayout.Center>
+
+    {/* HIT */}
   </Deck>
 );
 
