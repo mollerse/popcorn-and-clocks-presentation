@@ -646,7 +646,7 @@ playSong()
       >
         {`
 let t0, rAF;
-function loop() {
+function loop(t) {
   if (!t0) t0 = t;
 
   let durationInSeconds = (SONG.length - HALF_NOTES.length * 0.5) * PULSE;
