@@ -23,11 +23,11 @@ npm start
 
 ## Viewing the slides online
 
-Most recent version: [NDC 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/ndc/)
+Most recent version: [NDC 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/ndc2022/)
 
 Older versions:
 
-- [JavaZone 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/javazone/)
+- [JavaZone 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/javazone2022/)
 
 ## Demo code
 
