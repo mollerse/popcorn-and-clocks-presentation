@@ -10,4 +10,7 @@ export default defineConfig({
       promiseImportName: (i) => `__tla_${i}`,
     }),
   ],
+  build: {
+    outDir: "build",
+  },
 });
