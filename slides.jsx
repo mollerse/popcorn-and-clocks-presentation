@@ -145,14 +145,14 @@ const Presentation = () => (
       </Text>
     </SlideLayout.Center>
 
-    <SlideLayout.Center>
+    <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>
         Our journey today begins with everyones favorite thing in the whole
         world
       </Heading>
     </SlideLayout.Center>
 
-    <Slide transition={transition}>
+    <SlideLayout.Center transition={transition}>
       <Appear>
         <FlexBox>
           <Box>
@@ -180,7 +180,7 @@ const Presentation = () => (
           </Box>
         </FlexBox>
       </Appear>
-    </Slide>
+    </SlideLayout.Center>
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
@@ -216,7 +216,7 @@ const Presentation = () => (
       </Text>
     </Slide>
 
-    <SlideLayout.Center>
+    <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>Mission:</Heading>
       <Heading fontWeight={300}>
         Make the browser play Popcorn while something visual is happening on the
@@ -1540,17 +1540,21 @@ function loop() {
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>Speaking of having fun..</Heading>
     </SlideLayout.Center>
+
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>
         Since we've got a pretty robust thing with audio and visuals.
       </Heading>
     </SlideLayout.Center>
+
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>And we've talked alot about clocks...</Heading>
     </SlideLayout.Center>
+
     <Slide transition={transition}>
       <div className="demo-mount" />
     </Slide>
+
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight={300}>
         And since we've structured our data in an ordered manner...
@@ -1559,6 +1563,7 @@ function loop() {
     <Slide transition={transition}>
       <div className="demo-mount" />
     </Slide>
+
     <SlideLayout.Center transition={transition}>
       <Heading fontWeight="300" margin="0px" fontSize="150px">
         THANKS FOR LISTENING!
@@ -1585,8 +1590,6 @@ function loop() {
         Slides &amp; Code: github/mollerse/popcorn-and-clocks-presentation
       </Text>
     </SlideLayout.Center>
-
-    {/* HIT */}
   </Deck>
 );
 
