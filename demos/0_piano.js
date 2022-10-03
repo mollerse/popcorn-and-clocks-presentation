@@ -61,6 +61,7 @@ function initControls() {
 
 function initPiano() {
   let { in: piano } = pianoCtrl.getDevices();
+  if (!piano) return;
 
   piano.onmidimessage = function ({ data }) {
     let [eventId, note] = data;
