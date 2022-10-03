@@ -1599,17 +1599,15 @@ function loop() {
       </Appear>
       <Appear>
         <Text fontWeight={300}>
-          <Text fontWeight={300}>
-            and{" "}
-            <Link
-              color="#ebebeb"
-              fontWeight="300"
-              target="_blank"
-              href="https://preview.nrk.no/1.14946557.LATEST"
-            >
-              this
-            </Link>
-          </Text>
+          and{" "}
+          <Link
+            color="#ebebeb"
+            fontWeight="300"
+            target="_blank"
+            href="https://www.nrk.no/kultur/xl/the-hum_-hege-hoyrer-noko-nesten-ingen-andre-hoyrer-1.16121231"
+          >
+            this
+          </Link>
         </Text>
       </Appear>
     </Slide>
