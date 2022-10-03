@@ -241,6 +241,13 @@ const Presentation = () => (
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        This particular demo doesn't work without a nanoKEY2 midi keyboard😔
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -307,6 +314,13 @@ playSong()
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -421,6 +435,13 @@ function playSong() {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -498,6 +519,13 @@ function playSong() {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -840,6 +868,13 @@ function frame(t) {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -874,6 +909,13 @@ function frame() {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -949,6 +991,13 @@ function loop(t) {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -999,6 +1048,13 @@ function loop(t) {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -1182,6 +1238,13 @@ function frame(t) {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -1243,6 +1306,13 @@ function loop(t) {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -1395,6 +1465,13 @@ function loop() {
 
     <Slide transition={transition}>
       <Heading fontWeight={300}>Popcorn 🍿.</Heading>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -1552,6 +1629,13 @@ function loop() {
     </SlideLayout.Center>
 
     <Slide transition={transition}>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
@@ -1560,7 +1644,15 @@ function loop() {
         And since we've structured our data in an ordered manner...
       </Heading>
     </SlideLayout.Center>
+
     <Slide transition={transition}>
+      <Text fontWeight={300} className="demo-readme">
+        This is a demo-slide.
+        <br />
+        Press &quot;p&quot; to start or stop.
+        <br />
+        Trigger demo effects by using the tweakpane.
+      </Text>
       <div className="demo-mount" />
     </Slide>
 
