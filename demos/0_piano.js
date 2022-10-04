@@ -3,7 +3,7 @@ import { min, max, normalize } from "./parts/utils";
 import { roundRect } from "./parts/figures";
 import { FG, BG, ACCENT } from "./parts/colors";
 
-const NAME = "Audio Clock";
+const NAME = "Piano Demo";
 
 let ctx;
 let actx;
@@ -46,7 +46,7 @@ function initControls() {
       },
     })
     .addEffect(
-      "Spill av",
+      "Start Recording",
       [
         () => {
           t0 = actx.currentTime;

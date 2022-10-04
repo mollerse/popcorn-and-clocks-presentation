@@ -50,7 +50,7 @@ function initControls() {
   ctrl
     .createBinding(NAME)
     .addEffect(
-      "Spill av",
+      "Play sound and animate",
       [
         () => {
           t0 = 0;

@@ -3,7 +3,7 @@ import { min, max, normalize } from "./parts/utils";
 import { roundRect } from "./parts/figures";
 import { FG, BG, ACCENT } from "./parts/colors";
 
-const NAME = "Halfnotes";
+const NAME = "Halfnotes Semi-fixed";
 
 let ctx;
 let actx;
@@ -52,7 +52,7 @@ function initControls() {
   ctrl
     .createBinding(NAME)
     .addEffect(
-      "Spill av kun sang",
+      "Play sound",
       [
         () => {
           t0 = 0;
@@ -64,7 +64,7 @@ function initControls() {
       }
     )
     .addEffect(
-      "Tegn opp",
+      "Draw once",
       [
         () => {
           t0 = 0;
@@ -76,7 +76,7 @@ function initControls() {
       }
     )
     .addEffect(
-      "Spill av alt",
+      "Play sound and animate",
       [
         () => {
           t0 = 0;

@@ -52,7 +52,7 @@ function initControls() {
   ctrl
     .createBinding(NAME)
     .addEffect(
-      "Spill av kun sang",
+      "Play sound",
       [
         () => {
           t0 = 0;
@@ -64,7 +64,7 @@ function initControls() {
       }
     )
     .addEffect(
-      "Tegn opp",
+      "Draw once",
       [
         () => {
           t0 = 0;
@@ -76,7 +76,7 @@ function initControls() {
       }
     )
     .addEffect(
-      "Spill av alt",
+      "Play sound and animate",
       [
         () => {
           t0 = 0;

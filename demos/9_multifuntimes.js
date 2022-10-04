@@ -45,37 +45,19 @@ const SONG = POPCORN.reduce(function (acc, n, i) {
 }, []);
 
 function initControls() {
-  ctrl
-    .createBinding(NAME)
-    .addEffect(
-      "Spill av",
-      [
-        () => {
-          t0 = actx.currentTime;
-          QUEUE = [...SONG];
-          loop();
-        },
-      ],
-      {
-        triggerId: 9,
-      }
-    )
-    .addEffect(
-      "Waste time",
-      [
-        () => {
-          for (let i = 0; i < 100000; i++) {
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(-1, -1);
-            ctx.stroke();
-          }
-        },
-      ],
-      {
-        triggerId: 10,
-      }
-    );
+  ctrl.createBinding(NAME).addEffect(
+    "Play",
+    [
+      () => {
+        t0 = actx.currentTime;
+        QUEUE = [...SONG];
+        loop();
+      },
+    ],
+    {
+      triggerId: 9,
+    }
+  );
 }
 
 function circleAt(r, w = 1, f = FG) {

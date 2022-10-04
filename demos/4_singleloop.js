@@ -35,7 +35,7 @@ const SONG = POPCORN.map((v) => (v == null ? v : v + ROOT));
 
 function initControls() {
   ctrl.createBinding(NAME).addEffect(
-    "Spill av",
+    "Play sound and animate",
     [
       () => {
         t0 = 0;
