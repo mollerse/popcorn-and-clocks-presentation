@@ -23,10 +23,13 @@ npm start
 
 ## Viewing the slides online
 
-Most recent version: [NDC 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/ndc2022/)
+Most recent version:
+
+[NTNU 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/ntnu2022/)
 
 Older versions:
 
+- [NDC 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/ndc2022/)
 - [JavaZone 2022](https://mollerse.github.io/popcorn-and-clocks-presentation/dist/javazone2022/)
 
 ## Demo code
@@ -40,3 +43,7 @@ The most complete (and interesting) examples are:
 - `9_multifuntimes.js`
 
 If you have any questions, feel free to post an issue and I'll have a look.
+
+## Try it yourself!
+
+In the `tryit`-folder you will find a self-contained version of the `7_audioclock.js`-demo, which is the final demo with the audio clock (not the weird clock-looking things).

@@ -1,0 +1,158 @@
+import Synth from "../demos/parts/synth";
+import { min, max, normalize } from "../demos/parts/utils";
+import { roundRect } from "../demos/parts/figures";
+import { FG, BG, ACCENT } from "../demos/parts/colors";
+
+let ctx;
+let actx;
+let synth;
+let W;
+let H;
+let t0 = 0;
+
+const PULSE = 0.25; // s
+
+// prettier-ignore
+const POPCORN = [
+  0, -2, 0, -5, -9, -5, -12, null, // 0-7
+  0, -2, 0, -5, -9, -5, -12, null, // 8-15
+  0, 2, 3, 2, 3, 3, 0, 2, 0, 2, 2, -2, 0, -2, 0, 0, -4, 0 // 16 - 33
+];
+
+// prettier-ignore
+const HALF_NOTES = [
+  4,
+  12,
+  19, 22, 24, 27, 29, 32
+];
+
+const ROOT = 83;
+const SONG = POPCORN.reduce(function (acc, n, i) {
+  let durationSoFar = acc[i - 1]?.on || 0;
+  let previousNoteDuration = acc[i - 1]?.dur || 0;
+  let isThisNoteAHalfNote = HALF_NOTES.indexOf(i) > -1;
+
+  let note = {
+    note: n == null ? n : n + ROOT,
+    on: durationSoFar + previousNoteDuration,
+    dur: (isThisNoteAHalfNote ? 0.5 : 1) * PULSE,
+  };
+  acc.push(note);
+
+  return acc;
+}, []);
+
+function frame(t) {
+  ctx.save();
+
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, W, H);
+  ctx.translate(0.05 * W, 0.05 * H);
+  let w = 0.9 * W;
+  let h = 0.9 * H;
+
+  let lastNote = SONG[SONG.length - 1];
+  let totalDuration = lastNote.on + lastNote.dur;
+  let timePassedAsPercentage = t / totalDuration;
+
+  let notes = SONG.map(({ note }) => note);
+  let highestNote = max(notes);
+  let lowestNote = min(notes);
+  let yStep = h / Math.abs(highestNote - lowestNote);
+
+  for (let i = 0; i < SONG.length; i++) {
+    let { note, on, dur } = SONG[i];
+    if (note == null) continue;
+
+    let notePos = on;
+    let notePosAsPercentage = notePos / totalDuration;
+    let isActive = t > notePos;
+
+    let durationAsPercentage = dur / totalDuration;
+
+    let y = h - normalize(lowestNote - 1, highestNote, note) * h;
+    let x = notePosAsPercentage * w;
+
+    ctx.fillStyle = isActive ? ACCENT : FG;
+    roundRect(ctx, x, y, durationAsPercentage * w, yStep, 0.01 * w);
+    ctx.fill();
+  }
+
+  ctx.strokeStyle = ACCENT;
+  ctx.beginPath();
+  ctx.moveTo(timePassedAsPercentage * w, 0);
+  ctx.lineTo(timePassedAsPercentage * w, h);
+  ctx.lineWidth = 0.01 * w;
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+let rAF;
+const LOOKAHEAD = 0.75;
+
+let QUEUE = [...SONG];
+
+function loop() {
+  let lastNote = SONG[SONG.length - 1];
+  let tMax = lastNote.on + lastNote.dur;
+
+  let deltaT = actx.currentTime - t0;
+
+  rAF = requestAnimationFrame(loop);
+  if (deltaT > tMax) {
+    cancelAnimationFrame(rAF);
+    frame(0);
+    return;
+  }
+
+  let scheduleThreshold = deltaT + LOOKAHEAD;
+  while (QUEUE.length && QUEUE[0].on < scheduleThreshold) {
+    let { note, on, dur } = QUEUE[0];
+    QUEUE.splice(0, 1);
+
+    if (note == null) continue;
+
+    synth.play(note, t0 + on, dur);
+  }
+
+  frame(deltaT);
+}
+
+function init() {
+  let root = document.getElementById("root");
+
+  let initButton = document.createElement("button");
+  initButton.innerText = "Initialize";
+  initButton.addEventListener("click", function onClick() {
+    ctx = canvas.getContext("2d");
+    actx = new AudioContext();
+    synth = new Synth(actx);
+
+    W = canvas.width;
+    H = canvas.height;
+
+    frame(0);
+
+    initButton.removeEventListener("click", onClick);
+    root.removeChild(initButton);
+    root.prepend(playButton);
+  });
+  root.appendChild(initButton);
+
+  let playButton = document.createElement("button");
+  playButton.innerText = "Play";
+  playButton.addEventListener("click", function onClick() {
+    t0 = actx.currentTime;
+    QUEUE = [...SONG];
+    loop();
+  });
+
+  let canvas = document.createElement("canvas");
+  root.appendChild(canvas);
+  let width = 0.9 * window.innerWidth;
+  canvas.setAttribute("width", width);
+  canvas.setAttribute("height", (10 / 16) * width);
+}
+
+init();

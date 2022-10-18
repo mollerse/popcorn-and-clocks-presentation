@@ -1,6 +1,4 @@
 import Synth from "./parts/synth";
-import { min, max, normalize } from "./parts/utils";
-import { roundRect } from "./parts/figures";
 import { FG, BG, ACCENT } from "./parts/colors";
 
 const NAME = "Piano Demo";
@@ -12,7 +10,6 @@ let pianoCtrl;
 let synth;
 let W;
 let H;
-let t0 = 0;
 
 function round(n) {
   return n.toFixed(2);
@@ -44,19 +41,7 @@ function initControls() {
       onChange: ({ value }) => {
         synth.R = value;
       },
-    })
-    .addEffect(
-      "Start Recording",
-      [
-        () => {
-          t0 = actx.currentTime;
-          loop();
-        },
-      ],
-      {
-        triggerId: 9,
-      }
-    );
+    });
 }
 
 function initPiano() {
@@ -77,78 +62,30 @@ function initPiano() {
   };
 }
 
-function frame(t) {
-  let totalDuration = 60;
-  let timePassedAsPercentage = t / totalDuration;
-
+function frame() {
   ctx.save();
 
   ctx.fillStyle = BG;
-  ctx.fillRect(0, 0, W, 0.05 * H);
+  ctx.fillRect(0, 0, W, H);
 
   ctx.fillStyle = FG;
-  ctx.font = `${0.05 * H}px monospace`;
+  ctx.font = `${0.1 * H}px monospace`;
   ctx.textBaseline = "top";
   ctx.fillText(
     `A: ${round(synth.A)} D: ${round(synth.D)} S: ${round(synth.S)} R: ${round(
       synth.R
     )}`,
     0.05 * W,
-    0
+    0.15 * H
   );
-  ctx.fillStyle = BG;
-
-  ctx.translate(0.05 * W, 0.05 * H);
-  let w = 0.9 * W;
-  let h = 0.9 * H;
-
-  ctx.fillRect(
-    timePassedAsPercentage * w + 0.005 * w,
-    0,
-    w - timePassedAsPercentage * w,
-    h
-  );
-
-  let highestNote = 83 + 3;
-  let lowestNote = 83 - 12;
-  let yStep = h / Math.abs(highestNote - lowestNote);
-
-  let activeNotes = Object.keys(synth.notes);
-  for (let i = 0; i < activeNotes.length; i++) {
-    let note = activeNotes[i];
-
-    let y = h - normalize(lowestNote - 1, highestNote, note) * h;
-    let x = timePassedAsPercentage * w;
-
-    ctx.fillStyle = ACCENT;
-    roundRect(ctx, x, y, 0.005 * w, yStep, 0.01 * w);
-    ctx.fill();
-  }
-
-  ctx.strokeStyle = ACCENT;
-  ctx.beginPath();
-  ctx.moveTo(timePassedAsPercentage * w + 0.0115 * w, 0);
-  ctx.lineTo(timePassedAsPercentage * w + 0.0115 * w, h);
-  ctx.lineWidth = 0.01 * w;
-  ctx.stroke();
 
   ctx.restore();
 }
 
 let rAF;
 function loop() {
-  let tMax = 60;
-
-  let deltaT = actx.currentTime - t0;
-
   rAF = requestAnimationFrame(loop);
-  if (deltaT > tMax) {
-    cancelAnimationFrame(rAF);
-    frame(0);
-    return;
-  }
-
-  frame(deltaT);
+  frame();
 }
 
 function init(canvas, controls, audioContext, piano) {
@@ -163,7 +100,7 @@ function init(canvas, controls, audioContext, piano) {
 
   initControls(controls);
   initPiano(piano);
-  frame(0);
+  loop();
 }
 
 export function start(canvas, controls, audioContext, piano) {
@@ -171,5 +108,6 @@ export function start(canvas, controls, audioContext, piano) {
 }
 
 export function stop() {
+  cancelAnimationFrame(rAF);
   ctrl.removeBinding(NAME);
 }

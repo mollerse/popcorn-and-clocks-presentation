@@ -1,0 +1,36 @@
+{
+  "name": "popcorn-and-clocks-demo",
+  "version": "1.0.0",
+  "description": "Popcorn & Clocks - Try it yourself",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "Stian Møllersen <stian.moellersen@gmail.com>",
+  "license": "CC-BY-NC-SA-4.0",
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "prettier": "^2.7.1",
+    "vite": "^3.0.9",
+    "vite-plugin-top-level-await": "^1.1.1"
+  },
+  "dependencies": {
+    "@mollerse/midi-control": "^1.2.2"
+  },
+  "prettier": {},
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended"
+    ],
+    "env": {
+      "browser": true
+    },
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": "latest"
+    }
+  }
+}
