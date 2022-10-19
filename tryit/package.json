@@ -14,12 +14,9 @@
   "devDependencies": {
     "eslint": "^8.23.0",
     "prettier": "^2.7.1",
-    "vite": "^3.0.9",
-    "vite-plugin-top-level-await": "^1.1.1"
+    "vite": "^3.0.9"
   },
-  "dependencies": {
-    "@mollerse/midi-control": "^1.2.2"
-  },
+  "dependencies": {},
   "prettier": {},
   "eslintConfig": {
     "extends": [

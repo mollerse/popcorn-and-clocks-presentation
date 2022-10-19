@@ -122,37 +122,32 @@ function loop() {
 function init() {
   let root = document.getElementById("root");
 
-  let initButton = document.createElement("button");
-  initButton.innerText = "Initialize";
-  initButton.addEventListener("click", function onClick() {
-    ctx = canvas.getContext("2d");
-    actx = new AudioContext();
-    synth = new Synth(actx);
-
-    W = canvas.width;
-    H = canvas.height;
-
-    frame(0);
-
-    initButton.removeEventListener("click", onClick);
-    root.removeChild(initButton);
-    root.prepend(playButton);
-  });
-  root.appendChild(initButton);
-
   let playButton = document.createElement("button");
   playButton.innerText = "Play";
   playButton.addEventListener("click", function onClick() {
+    if (actx.state === "suspended") {
+      actx.resume();
+    }
     t0 = actx.currentTime;
     QUEUE = [...SONG];
     loop();
   });
+  root.prepend(playButton);
 
   let canvas = document.createElement("canvas");
   root.appendChild(canvas);
   let width = 0.9 * window.innerWidth;
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", (10 / 16) * width);
+
+  ctx = canvas.getContext("2d");
+  actx = new AudioContext();
+  synth = new Synth(actx);
+
+  W = canvas.width;
+  H = canvas.height;
+
+  frame(0);
 }
 
 init();
